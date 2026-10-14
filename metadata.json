@@ -1,0 +1,6 @@
+{
+  "name": "ParetoPause - Productivity Timer & Social Streak PWA",
+  "description": "Offline-first productivity and interval timer with Pareto 80/20, Pomodoro, synchronized YouTube Lo-Fi music, and friend leaderboards.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

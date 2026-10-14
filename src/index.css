@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --primary: #092677;
+    --primary-hover: #071e5e;
+    --accent: #af1b3f;
+    --accent-hover: #931433;
+    --accent-glow: rgba(175, 27, 63, 0.25);
+    --light-bg: #ffffff;
+    --dark-substrate: #090d16;
+    --dark-surface: #121826;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overscroll-behavior-y: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  h1, h2, h3, .font-display {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  .font-mono-numbers {
+    font-family: 'JetBrains Mono', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.15);
+  border-radius: 999px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Touch active micro-shrink */
+.touch-press:active {
+  transform: scale(0.97);
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(175, 27, 63, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 28px rgba(175, 27, 63, 0.65);
+  }
+}
+
+.glow-crimson {
+  animation: pulseGlow 2.5s infinite ease-in-out;
+}
