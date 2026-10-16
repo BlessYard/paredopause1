@@ -68,3 +68,32 @@
 .glow-crimson {
   animation: pulseGlow 2.5s infinite ease-in-out;
 }
+
+@keyframes opalBreathe {
+  0% {
+    transform: scale(0.95) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.06) rotate(180deg);
+  }
+  100% {
+    transform: scale(0.95) rotate(360deg);
+  }
+}
+
+@keyframes opalGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.35)) drop-shadow(0 0 32px rgba(255, 255, 255, 0.15));
+  }
+  50% {
+    filter: drop-shadow(0 0 28px rgba(255, 255, 255, 0.75)) drop-shadow(0 0 55px rgba(255, 77, 109, 0.35));
+  }
+}
+
+.animate-opal-breathe {
+  animation: opalBreathe 8s infinite ease-in-out;
+}
+
+.animate-opal-glow {
+  animation: opalGlow 3s infinite ease-in-out;
+}

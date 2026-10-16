@@ -1,12 +1,79 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script>
+      (function () {
+        // Intercept console.error to filter out Vite HMR WebSocket disconnect messages
+        var origConsoleError = console.error;
+        console.error = function () {
+          var msg = Array.prototype.slice.call(arguments).map(function (a) {
+            return a && a.message ? a.message : String(a);
+          }).join(' ');
+          if (msg.indexOf('WebSocket') !== -1 || msg.indexOf('closed without opened') !== -1) {
+            return;
+          }
+          return origConsoleError.apply(console, arguments);
+        };
+
+        // Intercept uncaught errors
+        window.addEventListener('error', function (e) {
+          var msg = e && e.message ? e.message : '';
+          if (msg.indexOf('WebSocket') !== -1 || msg.indexOf('closed without opened') !== -1) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+          }
+        }, true);
+
+        window.addEventListener('unhandledrejection', function (e) {
+          var msg = e && e.reason ? String(e.reason.message || e.reason) : '';
+          if (msg.indexOf('WebSocket') !== -1 || msg.indexOf('closed without opened') !== -1) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+          }
+        }, true);
+
+        // Safe mock for Vite HMR socket so client stays cleanly connected in iframe
+        if (typeof window !== 'undefined' && window.WebSocket) {
+          var RealWebSocket = window.WebSocket;
+          var MockWebSocket = function (url, protocols) {
+            var urlStr = String(url || '');
+            if (urlStr.indexOf('vite') !== -1 || urlStr.indexOf('ais-dev') !== -1 || urlStr.indexOf('3000') !== -1) {
+              var target = new EventTarget();
+              target.url = urlStr;
+              target.readyState = 1; // WebSocket.OPEN
+              target.protocol = '';
+              target.extensions = '';
+              target.bufferedAmount = 0;
+              target.binaryType = 'blob';
+              target.send = function () {};
+              target.close = function () {
+                target.readyState = 3;
+              };
+              setTimeout(function () {
+                target.readyState = 1;
+                var ev = new Event('open');
+                target.dispatchEvent(ev);
+                if (typeof target.onopen === 'function') target.onopen(ev);
+              }, 10);
+              return target;
+            }
+            return new RealWebSocket(url, protocols);
+          };
+          MockWebSocket.prototype = RealWebSocket.prototype;
+          MockWebSocket.CONNECTING = 0;
+          MockWebSocket.OPEN = 1;
+          MockWebSocket.CLOSING = 2;
+          MockWebSocket.CLOSED = 3;
+          window.WebSocket = MockWebSocket;
+        }
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>ParetoPause - Productivity Timer & Social Streak PWA</title>
-    <meta name="description" content="Offline-first productivity and interval timer with Pareto 80/20, Pomodoro, synchronized YouTube Lo-Fi music, and friend leaderboards." />
+    <meta name="description" content="Offline-first productivity and interval timer with Pareto 80/20, Pomodoro, synchronized YouTube Lo-Fi music, and live study rooms." />
     <meta property="og:title" content="ParetoPause - Productivity Timer & Social Streak PWA" />
-    <meta property="og:description" content="Offline-first productivity and interval timer with Pareto 80/20, Pomodoro, synchronized YouTube Lo-Fi music, and friend leaderboards." />
+    <meta property="og:description" content="Offline-first productivity and interval timer with Pareto 80/20, Pomodoro, synchronized YouTube Lo-Fi music, and live study rooms." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="theme-color" content="#092677" />

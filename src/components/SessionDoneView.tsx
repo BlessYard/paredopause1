@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import confetti from 'canvas-confetti';
-import { Flame, Trophy, RotateCcw, Home, Clock, Award } from 'lucide-react';
+import { Flame, Trophy, RotateCcw, Home, Clock, Award, Target, CheckCircle2 } from 'lucide-react';
 import { SessionConfig, UserStats } from '../types';
 
 interface Props {
@@ -8,7 +8,6 @@ interface Props {
   userStats: UserStats;
   onRestart: () => void;
   onHome: () => void;
-  onOpenLeaderboard: () => void;
 }
 
 export const SessionDoneView: React.FC<Props> = ({
@@ -16,7 +15,6 @@ export const SessionDoneView: React.FC<Props> = ({
   userStats,
   onRestart,
   onHome,
-  onOpenLeaderboard,
 }) => {
   useEffect(() => {
     // Fire celebratory confetti on mount
@@ -83,6 +81,50 @@ export const SessionDoneView: React.FC<Props> = ({
         </div>
       </div>
 
+      {/* Daily Deep Work Goal Status */}
+      {userStats.dailyGoalMinutes && (
+        <div className="w-full p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs text-left">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded-lg bg-blue-50 dark:bg-blue-950/60 flex items-center justify-center text-[#092677] dark:text-blue-400">
+                <Target className="w-3.5 h-3.5" />
+              </div>
+              <span className="text-xs font-black text-slate-800 dark:text-slate-200">
+                Daily Focus Goal Progress
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              {(userStats.todayMinutes || 0) >= userStats.dailyGoalMinutes && (
+                <span className="inline-flex items-center gap-0.5 text-[10px] font-black text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full">
+                  <CheckCircle2 className="w-3 h-3" /> Met!
+                </span>
+              )}
+              <span className="font-mono text-xs font-black text-slate-900 dark:text-white">
+                {userStats.todayMinutes || 0} / {userStats.dailyGoalMinutes}m
+              </span>
+            </div>
+          </div>
+          <div className="w-full h-3 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden border border-slate-200/80 dark:border-slate-700/60 flex">
+            <div
+              className={`h-full transition-all duration-700 ease-out ${
+                (userStats.todayMinutes || 0) >= userStats.dailyGoalMinutes
+                  ? 'bg-gradient-to-r from-emerald-500 to-teal-400'
+                  : 'bg-gradient-to-r from-[#092677] to-[#af1b3f]'
+              }`}
+              style={{
+                width: `${Math.min(
+                  100,
+                  Math.round(
+                    ((userStats.todayMinutes || 0) / userStats.dailyGoalMinutes) *
+                      100
+                  )
+                )}%`,
+              }}
+            />
+          </div>
+        </div>
+      )}
+
       {/* Action Buttons */}
       <div className="space-y-3 w-full pt-4">
         <button
@@ -92,15 +134,6 @@ export const SessionDoneView: React.FC<Props> = ({
         >
           <RotateCcw className="w-5 h-5" />
           <span>Restart Same Session</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={onOpenLeaderboard}
-          className="w-full py-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-100 font-bold text-sm flex items-center justify-center gap-2 hover:bg-slate-50 transition-all shadow-xs"
-        >
-          <Trophy className="w-4 h-4 text-amber-500" />
-          <span>View Updated Leaderboard</span>
         </button>
 
         <button

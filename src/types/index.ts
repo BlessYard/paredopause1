@@ -59,6 +59,9 @@ export interface UserStats {
   lastActiveDate: string; // ISO date YYYY-MM-DD
   friendCode: string;
   joinedDate: string;
+  dailyGoalMinutes: number; // user-set daily target of deep work minutes (e.g. 60, 100, 120, 180)
+  todayMinutes: number; // deep work minutes completed today
+  todayDate: string; // ISO date YYYY-MM-DD for resetting daily progress
 }
 
 export interface FriendEntry {
@@ -70,4 +73,87 @@ export interface FriendEntry {
   weeklyScore: number;
   isCurrentUser?: boolean;
   badge: 'Novice' | 'Consistent' | 'Deep Worker' | 'Pareto Master';
+}
+
+export interface RoomMember {
+  userId: string;
+  displayName: string;
+  avatarColor: string;
+  phase: SessionPhase;
+  currentSet: number;
+  totalSets: number;
+  remainingSeconds: number;
+  isRunning: boolean;
+  lastActive: number;
+  status: 'focusing' | 'resting' | 'paused' | 'idle' | 'offline';
+}
+
+export interface RoomCheer {
+  id: string;
+  fromName: string;
+  emoji: string;
+  timestamp: number;
+}
+
+export interface StudyRoom {
+  roomId: string;
+  roomName: string;
+  members: RoomMember[];
+  recentCheers: RoomCheer[];
+}
+
+export type TaskCategory = 'complex_creative' | 'analytical_friction' | 'admin_light';
+
+export interface StrategistTask {
+  id: string;
+  title: string;
+  category: TaskCategory;
+  estimatedMinutes?: number;
+}
+
+export interface MeetingSlot {
+  id: string;
+  title: string;
+  startTime: string; // "10:00"
+  endTime: string;   // "10:30"
+}
+
+export interface FocusBlock {
+  blockId: string;
+  taskTitle: string;
+  category: TaskCategory;
+  durationMinutes: number; // 50-60 for complex/creative, 25 for analytical/high-friction
+  startTime: string; // "09:30"
+  endTime: string;   // "10:20"
+  circadianPhase: 'morning_peak' | 'afternoon_second_wind' | 'recovery_break';
+  rationale: string;
+}
+
+export interface ChronoScheduleOutput {
+  executiveSummary: string;
+  wakeTime: string;
+  circadianPeaks: {
+    morningAlertnessPeak: string;
+    postLunchDip: string; // "1:00 PM - 3:00 PM (Strictly protected from deep focus)"
+    afternoonSecondWind: string;
+  };
+  paretoFocusBlocks: FocusBlock[];
+  totalDeepWorkMinutes: number;
+  totalBreakMinutes: number;
+  unassignedTasks?: string[];
+  recommendationNote: string;
+}
+
+export interface ProductivityDirectorResult {
+  oneTask: string;
+  firstStep2Min: string;
+  ignoreList: string[];
+  rationale: string;
+  timerDurationMinutes: number; // 25 or 50
+}
+
+export interface ParetoThreeTasksInput {
+  task1: string;
+  task2: string;
+  task3: string;
 }

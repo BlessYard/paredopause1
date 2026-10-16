@@ -1,23 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
-  <defs>
-    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#092677" />
-      <stop offset="100%" stop-color="#051442" />
-    </linearGradient>
-    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#af1b3f" />
-      <stop offset="100%" stop-color="#e11d48" />
-    </linearGradient>
-  </defs>
-  <!-- Background squircle -->
-  <rect width="512" height="512" rx="128" fill="url(#brandGrad)" />
-  <!-- Pareto 80/20 outer track circle -->
-  <circle cx="256" cy="256" r="160" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="28" />
-  <!-- 80% arc (Focus) -->
-  <circle cx="256" cy="256" r="160" fill="none" stroke="#ffffff" stroke-width="28" stroke-linecap="round" stroke-dasharray="1005.3" stroke-dashoffset="201" transform="rotate(-90 256 256)" />
-  <!-- 20% arc (Pause) -->
-  <circle cx="256" cy="256" r="160" fill="none" stroke="url(#accentGrad)" stroke-width="28" stroke-linecap="round" stroke-dasharray="1005.3" stroke-dashoffset="804" transform="rotate(198 256 256)" />
-  <!-- Central Pause bars with stylized energetic cut -->
-  <rect x="210" y="196" width="30" height="120" rx="15" fill="#ffffff" />
-  <rect x="272" y="196" width="30" height="120" rx="15" fill="url(#accentGrad)" />
+  <!-- Clean rounded substrate -->
+  <rect width="512" height="512" rx="120" fill="#ffffff" />
+
+  <!-- ParetoPause Signature Emblem centered -->
+  <g transform="translate(136, 106)">
+    <!-- Navy Foundation Stem (#092677) -->
+    <rect x="20" y="16" width="56" height="268" rx="14" fill="#092677" />
+
+    <!-- Top connector bar connecting stem to loop -->
+    <rect x="68" y="16" width="64" height="44" fill="#092677" />
+
+    <!-- Bottom connector bar connecting stem to loop -->
+    <rect x="68" y="146" width="64" height="44" fill="#092677" />
+
+    <!-- Crimson Loop of 'P' (#af1b3f) -->
+    <path
+      d="M100 16 H164 C208.18 16 244 51.82 244 96 C244 140.18 208.18 176 164 176 H100 V132 H164 C183.88 132 200 115.88 200 96 C200 76.12 183.88 60 164 60 H100 V16 Z"
+      fill="#af1b3f"
+    />
+
+    <!-- Signature Pause Bars (||) inside loop in Navy (#092677) -->
+    <rect x="112" y="68" width="18" height="56" rx="6" fill="#092677" />
+    <rect x="144" y="68" width="18" height="56" rx="6" fill="#092677" />
+  </g>
 </svg>
